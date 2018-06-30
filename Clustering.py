@@ -1,9 +1,10 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[ ]:
 
 
+#importacion de las bibliotecas nesesarias para el script
 get_ipython().magic(u'matplotlib inline')
 import os,sys
 import pandas as pd
@@ -14,10 +15,10 @@ from sklearn.preprocessing import StandardScaler
 from scipy.cluster.hierarchy import linkage, fcluster
 
 
-# In[2]:
+# In[ ]:
 
 
-random_state = 170 # random seed
+random_state = 170
 
 #obtencion de los nombres de los datasets
 files = os.listdir("./Clustering_Datasets")
@@ -35,7 +36,7 @@ for i in files:
     result_ARI.append([0.0]*4)
 
 
-# In[3]:
+# In[ ]:
 
 
 j = 0
@@ -81,35 +82,40 @@ for i in files:
     if(D == 2):
         
         #creamos la figura para los scatterplots
-        figure = plot.figure(figsize=(12, 12))
+        figure = plot.figure(figsize=(12, 18))
          
         #creamos el scatter plot del Ground Truth
         plot.subplot(321)
-        plot.scatter(dataset[:, 0], dataset[:, 1], c=labels_true, edgecolors="black", linewidth=1)
+        plot.scatter(dataset[:, 0], dataset[:, 1], c=labels_true, linewidth=1)
         plot.title("Ground Truth",fontsize=18,fontweight="bold")
         
         #creamos el scatter plot del Kmeans
         plot.subplot(322)
-        plot.scatter(dataset[:, 0], dataset[:, 1], c=labels_kmeans, edgecolors="black", linewidth=1)
+        plot.scatter(dataset[:, 0], dataset[:, 1], c=labels_kmeans, linewidth=1)
         plot.title("KMeans",fontsize=18,fontweight="bold")
         
         #creamos el scatter plot del HAC Average
         plot.subplot(323)
-        plot.scatter(dataset[:, 0], dataset[:, 1], c=labels_HAC_averange, edgecolors="black", linewidth=1)
-        plot.title("HAC Average",fontsize=18,fontweight="bold")
+        plot.scatter(dataset[:, 0], dataset[:, 1], c=labels_HAC_averange, linewidth=1)
+        plot.title("HAC Average linkage",fontsize=18,fontweight="bold")
         
         #creamos el scatter plot del HAC single
         plot.subplot(324)
-        plot.scatter(dataset[:, 0], dataset[:, 1], c=labels_HAC_single, edgecolors="black", linewidth=1)
-        plot.title("HAC Single",fontsize=18,fontweight="bold")
+        plot.scatter(dataset[:, 0], dataset[:, 1], c=labels_HAC_single, linewidth=1)
+        plot.title("HAC Single linkage",fontsize=18,fontweight="bold")
         
-        #
+        #creamos el scatter plot del HAC complete
         plot.subplot(325)
-        plot.scatter(dataset[:, 0], dataset[:, 1], c=labels_HAC_complete, edgecolors="black", linewidth=1)
-        plot.title("HAC Complete",fontsize=18,fontweight="bold")
+        plot.scatter(dataset[:, 0], dataset[:, 1], c=labels_HAC_complete, linewidth=1)
+        plot.title("HAC Complete linkage",fontsize=18,fontweight="bold")
         
+        #asignacion del titulo a la figura
         plot.suptitle(i,fontsize=18,fontweight="bold")
+        
+        #guardamos la figura en una imagen
         plot.savefig(i)
+        
+        #cerramos el plot
         plot.close()
         
     j += 1
@@ -118,9 +124,9 @@ for i in files:
 # In[ ]:
 
 
+#convertimos la matrix con los resultados de ARI en un dataFrame
+dfARI = pd.DataFrame(result_ARI,columns=["Kmeans","HAC Average linkage","HAC Single linkage","HAC Complete linkage"],index=files)
 
-dfARI = pd.DataFrame(,columns=crimes,index=forces)
-
-
+#exportamos el dataframe a un csv
 dfARI.to_csv("results_ARI.csv")
 
